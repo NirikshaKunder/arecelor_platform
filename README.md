@@ -10,15 +10,19 @@ All sample data is fictional.
 cobol-java-customer-demo/
 ├── cobol/
 │   ├── copybooks/CUSTREC.cpy      # 450-byte record layout (the contract)
+│   ├── copybooks/DCLCUST.cpy      # DB2 DCLGEN for the CUSTOMER table (CHAR() columns)
 │   └── programs/CUSTRPT.cbl       # COBOL batch report using COPY CUSTREC
 ├── data/
 │   └── customers.dat              # 3 sample fixed-width records
+├── sql/
+│   └── customer_queries.sql       # DB2 DDL + queries using CHAR() and SUBSTRING()
 ├── java/
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/example/custrec/
 │       │   ├── CustomerRecord.java   # Java model of CUSTOMER-RECORD
 │       │   ├── CopybookParser.java   # offsets mirror the PIC clauses
+│       │   ├── CustomerSql.java      # JDBC/DB2 queries using CHAR() and SUBSTRING()
 │       │   └── Main.java             # prints records as JSON + totals
 │       └── test/java/com/example/custrec/
 │           └── CopybookParserTest.java
@@ -51,6 +55,12 @@ cobol-java-customer-demo/
 
 Each child: first name X(20), DOB 9(08), current grade X(10), tuition fee 9(07)V99.
 `V99` is an implied decimal point, so `000261600` means 2,616.00.
+
+## DB2 side
+
+`DCLCUST.cpy` is a DCLGEN in the standard `EXEC SQL DECLARE ... TABLE` format, with `CHAR(nnnn)` columns and matching host variables. It needs the DB2 precompiler, so `CUSTRPT.cbl` does not copy it; the program keeps the equivalent `EXEC SQL SELECT CHAR(...), SUBSTRING(...)` as a comment.
+
+`CUSTRPT.cbl` uses the COBOL intrinsic `FUNCTION CHAR()` and reference modification `CUST-EMIRATES-ID(1:3)`, COBOL's equivalent of `SUBSTRING()`.
 
 ## Run it
 

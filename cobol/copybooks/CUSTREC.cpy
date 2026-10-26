@@ -5,6 +5,12 @@
       * LENGTH   : 450 bytes, fixed width, DISPLAY (text) fields only  *
       * USED BY  : CUSTRPT.cbl (COBOL), CopybookParser.java (Java)     *
       *================================================================*
+      * DB2 COLUMN MAPPING (see DCLCUST.cpy for the full DCLGEN)       *
+      *   CUST-APP-NUMBER   PIC X(17)  <->  APP_NUMBER   CHAR(0017)    *
+      *   CUST-STATUS       PIC X(15)  <->  STATUS       CHAR(0015)    *
+      *   CUST-GENDER       PIC X(01)  <->  GENDER       CHAR(0001)    *
+      *   CUST-EMIRATES-ID  PIC X(18)  <->  EMIRATES_ID  CHAR(0018)    *
+      *================================================================*
        01  CUSTOMER-RECORD.
            05  CUST-APP-NUMBER          PIC X(17).
            05  CUST-STATUS              PIC X(15).

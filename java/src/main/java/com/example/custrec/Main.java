@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Reads the same fixed-width file as the COBOL program CUSTRPT and
@@ -43,5 +45,12 @@ public class Main {
 
         System.err.printf("Customers: %d | Children: %d | Pending: %d | Tuition: %,.2f AED | Due: %,.2f AED%n",
                 records.size(), children, pending, tuition, due);
+
+        // Application numbers look like DKP-2026-538916-0; characters 4-7 are the year.
+        Map<String, Long> byYear = new TreeMap<>();
+        for (CustomerRecord r : records) {
+            byYear.merge(r.applicationNumber.substring(4, 8), 1L, Long::sum);
+        }
+        System.err.println("Applications by year: " + byYear);
     }
 }

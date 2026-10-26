@@ -39,6 +39,14 @@ public class CustomerRecord {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    /** Masks an Emirates ID such as 784-1985-4182937-2 to 784-****-*******-2. */
+    public String maskedEmiratesId() {
+        if (emiratesId == null || emiratesId.length() != 18) {
+            return emiratesId;
+        }
+        return emiratesId.substring(0, 4) + "****-*******" + emiratesId.substring(16);
+    }
+
     public String toJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");

@@ -2,6 +2,7 @@ package com.example.custrec;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -45,6 +46,19 @@ class CopybookParserTest {
         CustomerRecord oneKid = CopybookParser.parse(sampleLines().get(1));
         assertEquals(1, oneKid.children.size());
         assertEquals(new BigDecimal("21000.00"), oneKid.totalTuition());
+    }
+
+    @Test
+    void masksEmiratesIdKeepingPrefixAndCheckDigit() throws IOException {
+        CustomerRecord r = CopybookParser.parse(sampleLines().get(0));
+        assertEquals("784-****-*******-2", r.maskedEmiratesId());
+        assertEquals(r.emiratesId.substring(0, 3), r.maskedEmiratesId().substring(0, 3));
+    }
+
+    @Test
+    void sqlQueriesUseDb2Functions() {
+        assertTrue(CustomerSql.SELECT_SUMMARY.contains("SUBSTRING("));
+        assertTrue(CustomerSql.SELECT_SUMMARY.contains("CHAR("));
     }
 
     @Test
