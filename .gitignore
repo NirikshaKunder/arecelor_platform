@@ -1,0 +1,19 @@
+# Build output
+build/
+java/target/
+
+# COBOL compiler artifacts
+*.o
+*.so
+*.dll
+*.exe
+*.c.h
+*.c.l.h
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store

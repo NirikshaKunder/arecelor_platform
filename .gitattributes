@@ -1,0 +1,4 @@
+# Keep fixed-width records byte-exact (no line-ending or whitespace changes)
+*.dat -text
+*.cpy text eol=lf
+*.cbl text eol=lf

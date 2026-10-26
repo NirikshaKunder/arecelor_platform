@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GnuCOBOL
+        run: sudo apt-get update && sudo apt-get install -y gnucobol
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Compile and run COBOL report
+        run: |
+          mkdir -p build
+          cobc -x -I cobol/copybooks -o build/custrpt cobol/programs/CUSTRPT.cbl
+          ./build/custrpt
+
+      - name: Test and run Java parser
+        working-directory: java
+        run: |
+          mvn -B package
+          java -jar target/custrec.jar ../data/customers.dat
